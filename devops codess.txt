@@ -1,0 +1,462 @@
+ASSIGNMENT 2  7972791845      8888040899
+
+latestimeupdate.sh
+
+#!/bin/bash
+
+filename="uptime_data.tsv"
+
+if [ ! -e "$filename" ]; then
+    echo -e "Timestamp\tUptime" > "$filename"
+fi
+
+while true; do
+    
+    timestamp=$(date +"%Y-%m-%d %H:%M:%S")
+    uptime=$(uptime -p | cut -d' ' -f2-)
+
+    sort -r -o "$filename" "$filename"
+
+    echo -e "$timestamp\t$uptime" >> "$filename"
+
+    sleep 300
+done
+---------------------------------------------
+TCP SERVER.py
+import socket
+
+SERVER_HOST = '0.0.0.0'
+SERVER_PORT = 5555
+
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Bind the socket to the address and port
+server_socket.bind((SERVER_HOST, SERVER_PORT))
+
+# Listen for incoming connections
+server_socket.listen(1)
+print(f"[*] Listening on {SERVER_HOST}:{SERVER_PORT}")
+
+# Accept a client connection
+client_socket, client_address = server_socket.accept()
+print(f"[*] Accepted connection from {client_address[0]}:{client_address[1]}")
+
+# Receive data from client
+data = client_socket.recv(1024)
+print("[*] Received:", data.decode())
+
+# Send a response to client
+client_socket.sendall("Hello from server!".encode())
+
+# Close the connection
+client_socket.close()
+server_socket.close()
+
+TCP CLIENT.py
+import socket
+
+# Define server address and port
+SERVER_HOST = '127.0.0.1'
+SERVER_PORT = 5555
+
+# Create a TCP socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect to the server
+client_socket.connect((SERVER_HOST, SERVER_PORT))
+
+# Send data to server
+client_socket.sendall("Hello from client!".encode())
+
+# Receive response from server
+data = client_socket.recv(1024)
+print("[*] Received from server:", data.decode())
+
+# Close the connection
+client_socket.close()
+-------------------------------------
+UDP server.py
+if __name__ == "__main__":
+    host = "0.0.0.0"
+    port = 5001
+
+    """ Creating the UDP socket """
+    server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    """ Bind the host address with the port """
+    server.bind((host, port))
+
+    while True:
+  # Path to the uptime data file (modify as needed)
+      DATA_FILE_PATH = "uptime_data.tsv"
+# Open the uptime data file
+
+      data = []
+      with open(DATA_FILE_PATH, 'r') as file:
+          
+          for line in file:
+              
+      # Split the line based on the tab delimiter
+              data.append(line.strip().split('\t'))
+
+
+# Example usage
+
+
+# Access data
+# Access the timestamp and uptime elements
+     # timestamp, uptime = data[1]
+if data:
+    timestamp, uptime = data[1]
+else:
+    print("Error: Unable to read uptime data!")
+    # Handle the empty data case (send error message, etc.)
+
+# Concatenate the formatted string
+output_string = "Timestamp: " + timestamp + ", Uptime: " + uptime
+data, addr = server.recvfrom(1024)
+data = data.decode("utf-8")
+print(data)
+
+if data == "!EXIT":
+      print("Client disconnected.")
+      break
+
+      print(f"Client: {data}")
+
+      data = data.upper()
+      data = data.encode("utf-8")
+      server.sendto(output_string.encode("utf-8"), addr)
+
+UDP client.py
+import socket
+
+if __name__ == "__main__":
+    host = "13.235.99.16"
+    port = 5001
+    addr = (host, port)
+
+    """ Creating the UDP socket """
+    client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    while True:
+        data = input("Enter a word: ")
+
+        if data == "!EXIT":
+            data = data.encode("utf-8")
+            client.sendto(data, addr)
+
+            print("Disconneted from the server.")
+            break
+
+        data = data.encode("utf-8")
+        client.sendto(data, addr)
+
+        data, addr = client.recvfrom(9000)
+        data = data.decode("utf-8")
+        print(f"Server: {data}")
+----------------------------------------
+FTP server.py
+from pyftpdlib.authorizers import DummyAuthorizer
+from pyftpdlib.handlers import FTPHandler
+from pyftpdlib.servers import FTPServer
+
+def start_ftp_server():
+    authorizer = DummyAuthorizer()
+    authorizer.add_user("user", "password", ".", perm="elradfmw")
+
+    handler = FTPHandler
+    handler.authorizer = authorizer
+
+    server = FTPServer(("127.0.0.1", 21), handler)
+    server.serve_forever()
+
+if __name__ == "__main__":
+    start_ftp_server()
+
+FPT client.py
+from ftplib import FTP
+
+def ftp_client():
+    ftp = FTP("127.0.0.1")
+    ftp.login(user="user", passwd="password")
+
+    ftp.cwd("/")  
+
+    
+    files = ftp.nlst()
+    print("Files in the current directory:")
+    for file in files:
+        print(file)
+
+    
+    filename = "uptime_data.tsv"
+    with open(filename, "wb") as file:
+        ftp.retrbinary("RETR " + filename, file.write)
+--------------------------------------------------------
+====================================================
+ASSIGNMENT 3
+
+for ubuntu apt-get update is must
+apt-get --> yum
+apache2 -->httpd
+
+yum install httpd wget unzip  vim -y
+systemctl start httpd
+systemctl enable httpd
+mkdir -p /tmp/finance
+cd /tmp/finance
+wget https://www.tooplate.com/zip-templates/2135_mini_finance.zip
+unzip -o  2135_mini_finance.zip 
+cp -r 2135_mini_finance/* /var/www/html
+systemctl restart httpd
+cd /tmp/
+rm -rf /tmp/finance
+
+cd c:
+cd vagrant-vms/
+ls
+mdir centos
+cd centos
+vagrant init pastelink
+ls 
+vi Vagrantfile
+vagrant up
+vagrant global-status
+vagrant ssh
+sudo -i
+
+copy public addr and paste in new tab
+===================================================================
+ASSIGNMENT 4
+
+cd c:
+mkdir git
+cd git
+git config --global user.name ----
+git config --global user.email-----
+git init 
+code .
+(vs code will open and create bash terminal)
+login git hub create repository
+copy link of code
+
+git checkout -b main
+git remote add origin paste link
+git remote -v
+git pull origin
+git pull origin main
+ls
+(edit the README.file)
+git add .
+git commit -m "modified"
+git status
+git push -u origin main
+touch index.html
+git add .
+git commit -m "modified"
+git push origin main
+(check the git and return vs)
+git push --set-upstream origin main
+
+(make change in readme<h1>)
+git add .
+git commit -m "modified"
+git push origin main
+(check)
+
+touch abc.txt
+git add .
+git commit -m "modified"
+git push origin main
+
+(mofify in abc.txt)
+git add .
+git commit -m "modified"
+git push origin main
+(check)
+
+git branch iss53
+git checkout iss53
+touch index.html
+git add .
+git commit -m "modified"
+git push origin iss53
+(check)
+
+git log presss down arrow and q at the end
+git diff copy yellow link of main and iss53
+
+git branch hotfix
+git checkout hotfix
+touch ab.txt
+git add .
+git commit -m "modified"
+git push origin hotfix
+(check)
+
+git add .
+git commit -m "modified"
+git push origin hotfix
+
+git checkout main
+git merge hotfix
+git branch -d hotfix
+
+git checkout main
+git merge iss53
+git branch -d iss53
+==================================================================
+ASSIGNAMET 5
+
+dockerfile
+# Use an official Node.js runtime as a base image
+FROM node:latest
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json files to the working directory
+COPY package*.json ./
+
+# Install application dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Command to run the application
+CMD ["npm", "start"]
+
+Maven
+------
+
+-->
+create ec2 instance in ubuntu then connect
+
+sudo apt search jdk
+sudo apt install openjdk-11-jdk-y (if not use  - sudo apt update)
+sudo apt install maven -y
+mvn -v
+git clone https://github.com/hkhcoder/vprofile-project.git
+ls
+cd vprofile-project
+ls
+vi pom.xml --(changes <artifacId>javawebapps  <version>V1 replace all this)
+mvn validate
+mvn test
+mvn install
+ls
+cd target
+ls
+
+Created javawebapp-v1 (done)
+
+
+--------------------------------------------------------------------------------------------
+Postgres database
+-->
+
+install docker from link pase 2 links
+
+sudo docker pull postgres:latest
+
+sudo docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+
+psql -U postgres
+
+CREATE DATABASE MySQL;
+
+/q
+
+sudo docker stop postgres
+
+sudo docker rm postgres
+
+--------------------------------------------------------------------------------------------------
+
+NODE server
+-->
+
+Dokerfile
+
+# Use an official Node.js runtime as a base image
+FROM node:latest
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json files to the working directory
+COPY package*.json ./
+
+# Install application dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Command to run the application
+CMD ["npm", "start"]
+
+
+index.js
+
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello, World!');
+});
+
+server.listen(3000, '0.0.0.0');
+
+console.log('Server listening on port 3000');
+
+Commands
+
+git clone <link>
+ls
+cd nodeserver
+vi Dockerfile (write code inside)
+sudo docker build -t nodeserver
+sudo docker run -d -p 3000:3000 nodeserver
+
+browse- ip-address:3000
+hello ,world
+
+
+========================================================================
+
+ASSIGNMENT 6
+
+version : '3'
+services:
+         mongo:
+              image : mongo
+              ports :
+                   - "27017:27017"
+              environment :
+                   - MONGO_INITDB_ROOT_USERNAME=admin
+                   - MONGO_INITDB_ROOT_PASSWORD=password
+         mongo-express :
+              image: mongo-express
+              restart: always
+              ports :
+                   - "8081:8081"
+              environment:
+                   - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+                   - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+                   - ME_CONFIG_MONGODB_SERVER=mongo
+-------------------------------------------
+sudo su
+docker compose up 
+sudo docker compose -f docker-compose.yml up
+                                          stop
+rm -rf docker-compose.yml
+-------------------------------------------

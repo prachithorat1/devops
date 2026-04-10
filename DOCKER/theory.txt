@@ -1,1 +1,8 @@
+Q. What is Docker?
+Docker is a container technology: A tool for creating and managing containers
+
+Q. What is a container?
+A stansardized unit of software, A package of code and dependencies to run that code (code + runtime)
+Eg : picnic basket in which all the necessary things are in the basket.
+
 
